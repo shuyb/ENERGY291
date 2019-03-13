@@ -16,22 +16,22 @@ solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1_0312.csv", countrylist)
 # for each in countrylist
 #     generationProfiles[each], ratio = rescale_generation(generationProfiles, solarProfiles, each, true)
 # end
-offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
+# offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
 transmission_matrix = loadtransmission("transmission_0312.csv", countrylist)
 
-nStep = 8760
+nStep = 288
 charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep)
 
 pyplot()
 x = 1:nStep
 for i = 1:length(countrylist)
-    plot()
+    plot(size = (800,200))
     println("plotting")
     plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
     plot!(x, discharge[i,:], label = "discharge")
     plot!(x, storage[i,:], label = "storage")
     plot!(x, peaker[i,:], label = "peaker")
     xlabel!("Time in a day (h)")
-    xticks!(1:24:144)
+    xticks!(1:24:288)
     savefig("testrun/$(countrylist[i]).png")
 end

@@ -4,7 +4,7 @@ for i = 1:length(countrylist)
     plot!(x, loadProfiles[countrylist[i]][x], label = "load", title = "$(countrylist[i])", width = 3)
     plot!(x, sum(generationProfiles[countrylist[i]][x,:], dims = 2), label = "generation", width = 3)
     xlabel!("Time in a day (h)")
-    xticks!(1:72:8760)
+    xticks!(1:24:8760, fontsize = 15)
     savefig("checkbalance/$(countrylist[i]).png")
 end
 
