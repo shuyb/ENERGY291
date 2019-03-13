@@ -1,5 +1,5 @@
 function loadtransmission(filename, countrylist)
-    temp = CSV.read("transmission.csv")
+    temp = CSV.read(filename)
     transmission_matrix = Array{Int, 2}(undef, length(countrylist), length(countrylist))
     toremove = Array{Int,1}()
     for i = 1:size(temp, 2)
