@@ -74,7 +74,7 @@ function loadgeneration(loadpath, abbreviation)
                 end
             end
         end
-        generationProfiles[abbreviation[each[1:2]]] = temp2[:,[1:21]]
+        generationProfiles[abbreviation[each[1:2]]] = temp2
     end
     return generationProfiles
 end
