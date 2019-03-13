@@ -5,16 +5,15 @@ function loadgeneration(loadpath, abbreviation)
         println("working on $each")
         # original file
         temp = CSV.read(joinpath(loadpath, each), type = [String, String, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int])
-        temp = temp[:,1:23]
-        # deletecols!(temp, 24)
-        for i = 3:23
+        temp = temp[:,1:22]
+        for i = 3:22
             temp[:,i] = convert(Array{Int64,1}, temp[:,i])
         end
         # stores hourly actual generation
-        temp2 = Array{Int, 2}(undef, 8760,21)
+        temp2 = Array{Int, 2}(undef, 8760,20)
         # convert 15 min interval to hourly
         if temp[1,2][31:35] == "00:15"
-            sum = zeros(21,1)
+            sum = zeros(20,1)
             for cat = 3:ncol(temp)
                 for i = 1:size(temp)[1]
                     if i % 4 != 0
@@ -38,7 +37,7 @@ function loadgeneration(loadpath, abbreviation)
             end
         # convert 30 min interval to hourly
         elseif temp[1,2][31:35] == "00:30"
-            sum = zeros(21,1)
+            sum = zeros(20,1)
             for cat = 3:ncol(temp)
                 for i = 1:size(temp)[1]
                     if i % 2 != 0
@@ -74,7 +73,7 @@ function loadgeneration(loadpath, abbreviation)
                 end
             end
         end
-        generationProfiles[abbreviation[each[1:2]]] = temp2[:,[1:9;12:21]]
+        generationProfiles[abbreviation[each[1:2]]] = temp2
     end
     return generationProfiles
 end
