@@ -11,13 +11,13 @@ include("opt.jl")
 abbreviation = loadabbr("abbr.csv")
 loadProfiles = loadload("2018", abbreviation)
 countrylist = sort(collect(keys(loadProfiles)))
-generationProfiles = loadgeneration("generation_0312", abbreviation)
-solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1_0312.csv", countrylist)
+generationProfiles = loadgeneration("generation", abbreviation)
+solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1.csv", countrylist)
+# offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
 # for each in countrylist
 #     generationProfiles[each], ratio = rescale_generation(generationProfiles, solarProfiles, each, true)
 # end
-# offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
-transmission_matrix = loadtransmission("transmission_0312.csv", countrylist)
+transmission_matrix = loadtransmission("transmission.csv", countrylist)
 
 nStep = 288
 charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep)
