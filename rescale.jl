@@ -1,7 +1,7 @@
 # input actual generation one country
 function rescale_generation(generationProfiles, solarProfiles, country, switch = true, scale_solar = 1)
     if switch
-        println("Deploying $scale_solar * 100% of maximum possible solar generation in $country.")
+        println("Deploying $(scale_solar*100)% of maximum possible solar generation in $country.")
         generation = convert(Array{Float64}, abs.(generationProfiles[country]))
         solar = solarProfiles[country]
         Total_generation = sum(generation)
