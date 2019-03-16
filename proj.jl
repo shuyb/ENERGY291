@@ -1,4 +1,4 @@
-using CSV, JuMP, Clp, DataFrames, Plots, Cbc
+using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc
 include("abbr.jl")
 include("load.jl")
 include("generation.jl")
@@ -15,25 +15,25 @@ countrylist = sort(collect(keys(loadProfiles)))
 generationProfiles = loadgeneration("generation", abbreviation)
 loadbalance!(loadProfiles, generationProfiles, "flow", "injectionsites.txt", abbreviation_reverse)
 solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1.csv", countrylist)
-# offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
-# for each in countrylist
-#     generationProfiles[each], ratio = rescale_generation(generationProfiles, solarProfiles, each, true)
-# end
+offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
+for each in countrylist
+    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true)
+end
 transmission_matrix = loadtransmission("transmission.csv", countrylist)
 
 nStep = 8760
-# charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep)
+charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep)
 
 pyplot()
 x = 1:nStep
-# for i = 1:length(countrylist)
-#     plot(size = (800,200))
-#     println("plotting")
-#     plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
-#     plot!(x, discharge[i,:], label = "discharge")
-#     plot!(x, storage[i,:], label = "storage")
-#     plot!(x, peaker[i,:], label = "peaker")
-#     xlabel!("Time in a day (h)")
-#     xticks!(1:24:288)
-#     savefig("testrun/$(countrylist[i]).png")
-# end
+for i = 1:length(countrylist)
+    plot(size = (800,200))
+    println("plotting")
+    plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
+    plot!(x, discharge[i,:], label = "discharge")
+    plot!(x, storage[i,:], label = "storage")
+    plot!(x, peaker[i,:], label = "peaker")
+    xlabel!("Time in a day (h)")
+    xticks!(1:24:288)
+    savefig("testrun/$(countrylist[i]).png")
+end
