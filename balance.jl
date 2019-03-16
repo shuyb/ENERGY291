@@ -2,7 +2,6 @@ function loadbalance!(loadProfiles, generationProfiles, loadpath, inject, abbrev
     flowProfiles = Dict()
     for each in readdir(loadpath)
         println("working on $each")
-        # original fil
         temp = CSV.read(joinpath(loadpath, each), type = [String, Int, Int])
         deleterows!(temp, 1994)
         temp = convert(Matrix, temp[:,2:3])
@@ -24,7 +23,6 @@ function loadbalance!(loadProfiles, generationProfiles, loadpath, inject, abbrev
                 end
                 inflow[inside] = zeros(8760)
                 outflow[inside] = zeros(8760)
-                # assume no negetaive value in data
                 for each in outside
                     inflow[inside] = inflow[inside] + flowProfiles[inside * each][:,1]
                     outflow[inside] = outflow[inside] + flowProfiles[inside * each][:,2]

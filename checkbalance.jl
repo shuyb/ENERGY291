@@ -1,3 +1,4 @@
+# run proj.jl first to check balance
 pyplot()
 for i = 1:length(countrylist)
     plot(size = (20000,1000))
