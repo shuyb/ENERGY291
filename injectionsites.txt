@@ -1,0 +1,23 @@
+0, NO, RU
+1, FI, RU
+1, EE, RU
+1, LV, RU
+1, LT, RU, BY
+1, PL, UA
+1, SK, UA
+1, HU, UA, HR
+1, RO, UA
+1, BG, TR
+1, GR, AL
+1, MK, AL
+1, ME, AL
+1, RS, AL, HR
+1, BA, HR
+1, SI, HR
+1, IT, MT
+1, DE, LU
+1, BE, LU
+0, FR, LU
+0, FR, AD
+0, ES, AD
+1, ES, MA
