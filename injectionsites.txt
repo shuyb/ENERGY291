@@ -9,7 +9,7 @@
 1, RO, UA
 1, BG, TR
 1, GR, AL
-1, MK, AL
+0, MK, AL
 1, ME, AL
 1, RS, AL, HR
 1, BA, HR

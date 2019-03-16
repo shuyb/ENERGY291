@@ -2,16 +2,18 @@ using CSV, JuMP, Clp, DataFrames, Plots, Cbc
 include("abbr.jl")
 include("load.jl")
 include("generation.jl")
+include("balance.jl")
 include("solar.jl")
 include("rescale.jl")
 include("offset.jl")
 include("transmission.jl")
 include("opt.jl")
 
-abbreviation = loadabbr("abbr.csv")
+abbreviation, abbreviation_reverse = loadabbr("abbr.csv")
 loadProfiles = loadload("2018", abbreviation)
 countrylist = sort(collect(keys(loadProfiles)))
 generationProfiles = loadgeneration("generation", abbreviation)
+loadbalance!(loadProfiles, generationProfiles, "flow", "injectionsites.txt", abbreviation_reverse)
 solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1.csv", countrylist)
 # offset!(loadProfiles, generationProfiles, "peakadjusment.csv")
 # for each in countrylist
@@ -19,7 +21,7 @@ solarProfiles = loadsolar("2015EuropeSolarHourlyMW_GMT1.csv", countrylist)
 # end
 transmission_matrix = loadtransmission("transmission.csv", countrylist)
 
-nStep = 288
+nStep = 8760
 # charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep)
 
 pyplot()
