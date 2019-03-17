@@ -2,7 +2,7 @@
 function loadgeneration(loadpath, abbreviation)
     generationProfiles = Dict()
     for each in readdir(loadpath)
-        println("working on $each")
+        println("Reading in $each...")
         # original file
         temp = CSV.read(joinpath(loadpath, each), type = [String, String, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int])
         temp = temp[:,1:22]

@@ -1,7 +1,6 @@
 function loadbalance!(loadProfiles, generationProfiles, loadpath, inject, abbreviation)
     flowProfiles = Dict()
     for each in readdir(loadpath)
-        println("working on $each")
         temp = CSV.read(joinpath(loadpath, each), type = [String, Int, Int])
         deleterows!(temp, 1994)
         temp = convert(Matrix, temp[:,2:3])

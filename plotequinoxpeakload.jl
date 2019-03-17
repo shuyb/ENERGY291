@@ -9,7 +9,3 @@ for (k,v) in loadProfiles
     xticks!(1:1:48)
     savefig(plt, "loadProfiles/$(k).png")
 end
-
-for each in sort(collect(keys(generationProfiles)))
-    println(each)
-end

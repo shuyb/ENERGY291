@@ -1,14 +1,14 @@
 # input actual generation one country
 function rescale_generation(generationProfiles, solarProfiles, country, switch = true, scale_solar = 1)
     if switch
-        println("Deploying $(scale_solar*100)% of maximum possible solar generation in $country.")
+        println("Deploying $(scale_solar*100)% of all potential solar generation in $country.")
         generation = convert(Array{Float64}, abs.(generationProfiles[country]))
         solar = solarProfiles[country]
         Total_generation = sum(generation)
         generation_mix = ["Biomass", "Brown coal", "Coal derived gas", "Gas", "Hard coal", "Oil", "Oil shale", "Peat", "Geothermal", "Hydro", "Hydro river", "Hydro reservoir", "Marine", "Nuclear", "Other", "Other renewable", "Solar", "Waste", "Wind onshore", "Wind offshore"]
         #                  1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20
-        # NotChangeable = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1]
-        # Changeable =    [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        # NotChangeable = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1]
+        # Changeable =    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         # Scalable =      [1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         # coeff_condition = hcat(generation_mix, NotChangeable, Changeable, Scalable)
         default_scale_solar = sum(generation[:,17]) / sum(solar)
@@ -39,10 +39,9 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
 
         @variable(m, coef[1:8760, 1:20] >= 0)
         # renewable sources are non-changeable nor scalable, excluding solar
-        @constraint(m, [j = [9;11;13;15;16;18;19;20], i = 1:8760], coef[i,j] == 1)
+        @constraint(m, [j = [9;10;11;12;13;15;16;18;19;20], i = 1:8760], coef[i,j] == 1)
         @constraint(m, [j = [1;2;5;6;7;8;14], i = 1:8759], coef[i,j] == coef[i,j+1]) # base load sources are scalable, but curve not changeable
         @constraint(m, [j = 17, i = 1:8760], coef[i,j] == scale_solar) # solar is defined
-        # @constraint(m, [i = [3;4;10;12;15;18]], ) # other coefficient flexible (load-following)
 
         @expression(m, scaled_generation, coef .* generation)
         @constraint(m, [i=1:8760], sum(scaled_generation[i,:]) == sum(generation[i,:])) # > is fine, only happen when solar is more than total generation, solar will be stored in main model in this case
