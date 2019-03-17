@@ -1,6 +1,6 @@
 # go to param.jl to change parameters
 
-using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc
+using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc, DelimitedFiles
 include("param.jl")
 include("abbr.jl")
 include("load.jl")
@@ -126,3 +126,7 @@ for i = 1:10, j = 1:10
     # end
 
 end
+
+writedlm("cost1.txt", cost1, ",")
+writedlm("cost2.txt", cost2, ",")
+writedlm("cost3.txt", cost3, ",")
