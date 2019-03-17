@@ -17,11 +17,11 @@ pyplot()
 apeakloadpercentage = 0.01:0.01:0.15
 ascale_solar = 0.1:0.1:1
 
-cost1 = zeros(10,10)
-cost2 = zeros(10,10)
-cost3 = zeros(10,10)
+cost1 = zeros(15,10)
+cost2 = zeros(15,10)
+cost3 = zeros(15,10)
 
-for i = 1:10, j = 1:10
+for i = 1:15, j = 1:10
 
     peakloadpercentage = apeakloadpercentage[i]
     scale_solar = ascale_solar[j]
