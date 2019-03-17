@@ -11,17 +11,13 @@ include("solar.jl")
 include("rescale.jl")
 include("offset.jl")
 include("transmission.jl")
-include("opt.jl")
+include("opt_transmission.jl")
 pyplot()
 
-apeakloadpercentage = 0.01:0.01:0.15
-ascale_solar = 0.1:0.1:1
+apeakloadpercentage = 0.01:0.01:0.01
+ascale_solar = 1:1:1
 
-cost1 = zeros(15,10)
-cost2 = zeros(15,10)
-cost3 = zeros(15,10)
-
-for i = 1:15, j = 1:10
+for i = 1:1, j = 1:1
 
     peakloadpercentage = apeakloadpercentage[i]
     scale_solar = ascale_solar[j]
@@ -43,9 +39,8 @@ for i = 1:15, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost1[i,j] = cost
-    println("sce1($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission1 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    writedlm("t1.txt", transmission1, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))
@@ -76,9 +71,8 @@ for i = 1:15, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost2[i,j] = cost
-    println("sce2($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission2 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    writedlm("t2.txt", transmission2, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))
@@ -109,9 +103,8 @@ for i = 1:15, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost3[i,j] = cost
-    println("sce3($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission3 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    writedlm("t3.txt", transmission3, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))
@@ -126,7 +119,3 @@ for i = 1:15, j = 1:10
     # end
 
 end
-
-writedlm("cost1.txt", cost1, ",")
-writedlm("cost2.txt", cost2, ",")
-writedlm("cost3.txt", cost3, ",")
