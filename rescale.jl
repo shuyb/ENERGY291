@@ -24,8 +24,6 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         generation = float(generation)
         generation[:,[4;10:12]] = generation[:,[4;10:12]] .+ 0.0001
         
-        scale_solar = min(max(scale_solar, default_scale_solar), 1) / default_scale_solar
-
         c_var_s = 0.5/1000 # $/MWh
         c_var_w = 0.5/1000 # $/MWh
         c_var_gas = 41500/1000 # $/MWh
