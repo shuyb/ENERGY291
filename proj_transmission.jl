@@ -1,6 +1,6 @@
 # go to param.jl to change parameters
 
-using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc
+using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc, DelimitedFiles
 include("param.jl")
 include("abbr.jl")
 include("load.jl")
@@ -11,17 +11,13 @@ include("solar.jl")
 include("rescale.jl")
 include("offset.jl")
 include("transmission.jl")
-include("opt.jl")
+include("opt_transmission.jl")
 pyplot()
 
-apeakloadpercentage = 0.01:0.01:0.15
-ascale_solar = 0.1:0.1:1
+apeakloadpercentage = 0.01:0.01:0.01
+ascale_solar = 1:1:1
 
-cost1 = zeros(10,10)
-cost2 = zeros(10,10)
-cost3 = zeros(10,10)
-
-for i = 1:10, j = 1:10
+for i = 1:1, j = 1:1
 
     peakloadpercentage = apeakloadpercentage[i]
     scale_solar = ascale_solar[j]
@@ -43,9 +39,11 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost1[i,j] = cost
-    println("sce1($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission1 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+
+    open("t1.txt", "w") do io
+           writedlm(io, transmission1, ",")
+       end
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))
@@ -76,9 +74,10 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost2[i,j] = cost
-    println("sce2($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission2 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    open("t2.txt", "w") do io
+           writedlm(io, transmission2, ",")
+       end
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))
@@ -109,9 +108,10 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-    cost3[i,j] = cost
-    println("sce3($i,$j)=$cost")
+    charge, discharge, storage, peaker, cost, transmission3 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    open("t3.txt", "w") do io
+           writedlm(io, transmission3, ",")
+       end
     x = 1:nStep
     # for i = 1:length(countrylist)
     #     plot(size = (20000,300))

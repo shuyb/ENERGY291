@@ -1,5 +1,6 @@
 function loadbalance!(loadProfiles, generationProfiles, loadpath, inject, abbreviation)
     flowProfiles = Dict()
+    countrylist = sort(collect(keys(loadProfiles)))
     for each in readdir(loadpath)
         temp = CSV.read(joinpath(loadpath, each), type = [String, Int, Int])
         deleterows!(temp, 1994)
