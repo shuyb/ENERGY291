@@ -12,13 +12,14 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # Scalable =      [1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         # coeff_condition = hcat(generation_mix, NotChangeable, Changeable, Scalable)
 		ori_generation = copy(generation)
-        default_scale_solar = sum(generation[:,17]) / sum(solar)
-        if default_scale_solar < 1
-            generation[:,17] = solar * default_scale_solar
-        else
-            println("Cannot deploy more solar generation in $country.")
+		
+		scale_solar = min(1, scale_solar)
+		if sum(generation[:,17]) < sum(solar)
+			generation[:,17] = solar
+		else
+			println("Cannot deploy more solar generation in $country.")
             return generationProfiles[country]
-        end
+		end
 
         generation = float(generation)
         generation[:,[4;10:12]] = generation[:,[4;10:12]] .+ 0.0001
