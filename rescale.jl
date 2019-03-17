@@ -11,6 +11,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # Changeable =    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         # Scalable =      [1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         # coeff_condition = hcat(generation_mix, NotChangeable, Changeable, Scalable)
+		ori_generation = copy(generation)
         default_scale_solar = sum(generation[:,17]) / sum(solar)
         if default_scale_solar < 1
             generation[:,17] = solar * default_scale_solar
@@ -22,7 +23,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         generation = float(generation)
         generation[:,4] = generation[:,4] .+ 0.0001
         
-        scale_solar = min(max(scale_solar, default_scale_solar), 1)
+        scale_solar = min(max(scale_solar, default_scale_solar), 1) / default_scale_solar
 
         c_var_s = 0.5/1000 # $/MWh
         c_var_w = 0.5/1000 # $/MWh
@@ -47,7 +48,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         @constraint(m, [j = 17, i = 1:8760], coef[i,j] == scale_solar) # solar is defined
 
         @expression(m, scaled_generation, coef .* generation)
-        @constraint(m, [i=1:8760], sum(scaled_generation[i,:]) == sum(generation[i,:])) # > is fine, only happen when solar is more than total generation, solar will be stored in main model in this case
+        @constraint(m, [i=1:8760], sum(scaled_generation[i,:]) >= sum(ori_generation[i,:])) # > is fine, only happen when solar is more than total generation, solar will be stored in main model in this case
 
         @objective(m, Min, dot(sum(scaled_generation, dims = 1), cost))
 
