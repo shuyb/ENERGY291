@@ -45,7 +45,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # renewable sources are non-changeable nor scalable, excluding solar
         @constraint(m, [j = [9;13;15;16;18;19;20], i = 1:8760], coef[i,j] == 1)
         @constraint(m, [j = [1;2;5;6;7;8;14], i = 1:8759], coef[i,j] == coef[i,j+1]) # base load sources are scalable, but curve not changeable
-        @constraint(m, [j = 10：12, i = 1:8760], coef[i,j]*generation[i,j] <= maximum(generation[:,j])) # hydro capacity limit
+        @constraint(m, [j = 10:12, i = 1:8760], coef[i,j]*generation[i,j] <= maximum(generation[:,j])) # hydro capacity limit
 		@constraint(m, [j = 17, i = 1:8760], coef[i,j] == scale_solar) # solar is defined
 
         @expression(m, scaled_generation, coef .* generation)
