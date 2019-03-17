@@ -12,7 +12,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # Scalable =      [1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         # coeff_condition = hcat(generation_mix, NotChangeable, Changeable, Scalable)
 		ori_generation = copy(generation)
-		
+
 		scale_solar = min(1, scale_solar)
 		if sum(generation[:,17]) < sum(solar)
 			generation[:,17] = solar
@@ -23,8 +23,8 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
 
         generation = float(generation)
         generation[:,[4;10:12]] = generation[:,[4;10:12]] .+ 0.0001
-        
-        scale_solar = min(max(scale_solar, default_scale_solar), 1) / default_scale_solar
+
+        # scale_solar = min(max(scale_solar, default_scale_solar), 1) / default_scale_solar
 
         c_var_s = 0.5/1000 # $/MWh
         c_var_w = 0.5/1000 # $/MWh

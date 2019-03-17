@@ -12,7 +12,7 @@ include("rescale.jl")
 include("offset.jl")
 include("transmission.jl")
 include("opt_transmission.jl")
-pyplot()
+# pyplot()
 
 apeakloadpercentage = 0.01:0.01:0.01
 ascale_solar = 1:1:1
