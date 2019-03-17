@@ -21,7 +21,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         end
 
         generation = float(generation)
-        generation[:,4] = generation[:,4] .+ 0.0001
+        generation[:,[4;10:12]] = generation[:,[4;10:12]] .+ 0.0001
         
         scale_solar = min(max(scale_solar, default_scale_solar), 1) / default_scale_solar
 
