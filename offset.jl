@@ -25,7 +25,7 @@ function offset!(loadProfiles, generationProfiles, peakadj, solaradj, pswitch, s
             end
         end
         for (k, v) in offset
-            generationProfiles[k][:,17] = circshift(generationProfiles[k][:,17], (v,0))
+            generationProfiles[k][:,17] = circshift(generationProfiles[k][:,17], v)
         end
     end
 end
