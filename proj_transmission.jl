@@ -40,6 +40,7 @@ for i = 1:1, j = 1:1
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
     charge, discharge, storage, peaker, cost, transmission1 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    transmission1 = transmission1[:,:,1]
     writedlm("t1.txt", transmission1, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
@@ -72,6 +73,7 @@ for i = 1:1, j = 1:1
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
     charge, discharge, storage, peaker, cost, transmission2 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    transmission2 = transmission2[:,:,1]
     writedlm("t2.txt", transmission2, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
@@ -104,6 +106,7 @@ for i = 1:1, j = 1:1
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
     charge, discharge, storage, peaker, cost, transmission3 = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    transmission3 = transmission3[:,:,1]
     writedlm("t3.txt", transmission3, ",")
     x = 1:nStep
     # for i = 1:length(countrylist)
