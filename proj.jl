@@ -12,15 +12,16 @@ include("rescale.jl")
 include("offset.jl")
 include("transmission.jl")
 include("opt.jl")
-pyplot()
+# pyplot()
 
 
 peakloadpercentage = 0.01
+scale_switch = true
 scale_solar = 1
 
 # Scenario 1: normal solar, normal load and generation
-offset_switch = false
-solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
+peak_switch = false
+solar_switch = false
 
 abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
 loadProfiles = loadload(load_path, abbreviation)
@@ -29,16 +30,15 @@ nBattery = planstorage(loadProfiles, peakloadpercentage, powercapacity, duration
 generationProfiles = loadgeneration(generation_path, abbreviation)
 loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
 solarProfiles = loadsolar(solar_path, countrylist)
-offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
 for each in countrylist
-    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
+    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, scale_switch, scale_solar)
 end
 transmission_matrix = loadtransmission(transmission_path, countrylist)
 
 charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-cost1[i,j] = cost
 println("sce1($i,$j)=$cost")
-x = 1:nStep
+# x = 1:nStep
 # for i = 1:length(countrylist)
 #     plot(size = (20000,300))
 #     println("plotting")
@@ -52,8 +52,8 @@ x = 1:nStep
 # end
 
 # Scenario 2: normal solar, unified load and generation
-offset_switch = true
-solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
+peak_switch = true
+solar_switch = false
 
 abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
 loadProfiles = loadload(load_path, abbreviation)
@@ -62,16 +62,15 @@ nBattery = planstorage(loadProfiles, peakloadpercentage, powercapacity, duration
 generationProfiles = loadgeneration(generation_path, abbreviation)
 loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
 solarProfiles = loadsolar(solar_path, countrylist)
-offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
 for each in countrylist
-    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
+    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, scale_switch, scale_solar)
 end
 transmission_matrix = loadtransmission(transmission_path, countrylist)
 
 charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-cost2[i,j] = cost
 println("sce2($i,$j)=$cost")
-x = 1:nStep
+# x = 1:nStep
 # for i = 1:length(countrylist)
 #     plot(size = (20000,300))
 #     println("plotting")
@@ -85,8 +84,8 @@ x = 1:nStep
 # end
 
 # Scenario 3: unified solar, unified load and generation
-offset_switch = true
-solar_path = "2015EuropeSolarHourlyMW_Hypo.csv"
+peak_switch = true
+solar_switch = true
 
 abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
 loadProfiles = loadload(load_path, abbreviation)
@@ -95,16 +94,15 @@ nBattery = planstorage(loadProfiles, peakloadpercentage, powercapacity, duration
 generationProfiles = loadgeneration(generation_path, abbreviation)
 loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
 solarProfiles = loadsolar(solar_path, countrylist)
-offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
 for each in countrylist
-    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
+    generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, scale_switch, scale_solar)
 end
 transmission_matrix = loadtransmission(transmission_path, countrylist)
 
 charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
-cost3[i,j] = cost
 println("sce3($i,$j)=$cost")
-x = 1:nStep
+# x = 1:nStep
 # for i = 1:length(countrylist)
 #     plot(size = (20000,300))
 #     println("plotting")

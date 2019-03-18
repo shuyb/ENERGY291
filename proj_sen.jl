@@ -27,8 +27,8 @@ for i = 1:10, j = 1:10
     scale_solar = ascale_solar[j]
 
     # Scenario 1: normal solar, normal load and generation
-    offset_switch = false
-    solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
+    peak_switch = false
+    solar_switch = false
 
     abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
     loadProfiles = loadload(load_path, abbreviation)
@@ -37,7 +37,7 @@ for i = 1:10, j = 1:10
     generationProfiles = loadgeneration(generation_path, abbreviation)
     loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
     solarProfiles = loadsolar(solar_path, countrylist)
-    offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+    offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
     for each in countrylist
         generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
     end
@@ -63,8 +63,8 @@ for i = 1:10, j = 1:10
     # end
 
     # Scenario 2: normal solar, unified load and generation
-    offset_switch = true
-    solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
+    peak_switch = true
+    solar_switch = false
 
     abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
     loadProfiles = loadload(load_path, abbreviation)
@@ -73,7 +73,7 @@ for i = 1:10, j = 1:10
     generationProfiles = loadgeneration(generation_path, abbreviation)
     loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
     solarProfiles = loadsolar(solar_path, countrylist)
-    offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+    offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
     for each in countrylist
         generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
     end
@@ -99,8 +99,8 @@ for i = 1:10, j = 1:10
     # end
 
     # Scenario 3: unified solar, unified load and generation
-    offset_switch = true
-    solar_path = "2015EuropeSolarHourlyMW_Hypo.csv"
+    peak_switch = true
+    solar_switch = true
 
     abbreviation, abbreviation_reverse = loadabbr(abbreviation_path)
     loadProfiles = loadload(load_path, abbreviation)
@@ -109,7 +109,7 @@ for i = 1:10, j = 1:10
     generationProfiles = loadgeneration(generation_path, abbreviation)
     loadbalance!(loadProfiles, generationProfiles, flow_path, injection_path, abbreviation_reverse)
     solarProfiles = loadsolar(solar_path, countrylist)
-    offset!(loadProfiles, generationProfiles, peakadjusment_path, offset_switch)
+    offset!(loadProfiles, generationProfiles, peakadjusment_path, solaradjustment_path, peak_switch, solar_switch)
     for each in countrylist
         generationProfiles[each] = rescale_generation(generationProfiles, solarProfiles, each, true, scale_solar)
     end

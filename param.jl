@@ -1,6 +1,7 @@
 abbreviation_path = "abbr.csv"
 load_path = "2018"
 generation_path = "generation"
+solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
 flow_path = "flow"
 injection_path = "injectionsites.txt"
 # offset_switch = false
