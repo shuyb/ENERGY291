@@ -16,8 +16,7 @@ for each in countrylist
 		plt = hline!([minimum(couple[1970+11:1993+shift-6,1])], ls = :dot, width = 3, color = :black, label = "")
 		plt = hline!([maximum(couple[1970+6:1993+shift,1])], ls = :dot, width = 3, color = :black, label = "")
 		xticks!(1:1:24+shift)
-		ylabel!("MW")
-		xlabel!("Hour")
-		title!("Offset effect with $(each)")
+		xlabel!("Time in a day (hour)")
+		title!("Offset effect with $(each), Mar-23-2018")
 		savefig(plt, "duck/$(each).png")
 end

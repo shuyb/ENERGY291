@@ -1,4 +1,4 @@
-# load country abbreviation
+# loads country abbreviation
 function loadabbr(filename)
     abbr = CSV.read(filename, header = 0)
     abbreviation = Dict()

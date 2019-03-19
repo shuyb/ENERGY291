@@ -1,4 +1,6 @@
 # go to param.jl to change parameters
+# This is a variation for proj.jl to perform sensitivity analysis
+# check proj.jl for comments
 
 using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc, DelimitedFiles
 include("param.jl")
@@ -43,24 +45,12 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration, transmissionloss)
     cost1[i,j] = cost
     println("sce1($i,$j)=$cost")
     f = open("cost_sen.txt","a")
     write(f,"sce1($i,$j)=$cost\n")
     close(f)
-    # x = 1:nStep
-    # for i = 1:length(countrylist)
-    #     plot(size = (20000,300))
-    #     println("plotting")
-    #     plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
-    #     plot!(x, discharge[i,:], label = "discharge")
-    #     plot!(x, storage[i,:], label = "storage")
-    #     plot!(x, peaker[i,:], label = "peaker")
-    #     xlabel!("Time in a day (h)")
-    #     xticks!(1:24:nStep)
-    #     savefig("sce1/$(countrylist[i]).png")
-    # end
 
     # Scenario 2: normal solar, unified load and generation
     peak_switch = true
@@ -79,24 +69,12 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration, transmissionloss)
     cost2[i,j] = cost
     println("sce2($i,$j)=$cost")
     f = open("cost_sen.txt","a")
     write(f,"sce2($i,$j)=$cost\n")
     close(f)
-    # x = 1:nStep
-    # for i = 1:length(countrylist)
-    #     plot(size = (20000,300))
-    #     println("plotting")
-    #     plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
-    #     plot!(x, discharge[i,:], label = "discharge")
-    #     plot!(x, storage[i,:], label = "storage")
-    #     plot!(x, peaker[i,:], label = "peaker")
-    #     xlabel!("Time in a day (h)")
-    #     xticks!(1:24:nStep)
-    #     savefig("sce2/$(countrylist[i]).png")
-    # end
 
     # Scenario 3: unified solar, unified load and generation
     peak_switch = true
@@ -115,24 +93,12 @@ for i = 1:10, j = 1:10
     end
     transmission_matrix = loadtransmission(transmission_path, countrylist)
 
-    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+    charge, discharge, storage, peaker, cost = optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration, transmissionloss)
     cost3[i,j] = cost
     println("sce3($i,$j)=$cost")
     f = open("cost_sen.txt","a")
     write(f,"sce3($i,$j)=$cost\n")
     close(f)
-    # x = 1:nStep
-    # for i = 1:length(countrylist)
-    #     plot(size = (20000,300))
-    #     println("plotting")
-    #     plot!(x, charge[i,:], label = "charge", title = "$(countrylist[i])")
-    #     plot!(x, discharge[i,:], label = "discharge")
-    #     plot!(x, storage[i,:], label = "storage")
-    #     plot!(x, peaker[i,:], label = "peaker")
-    #     xlabel!("Time in a day (h)")
-    #     xticks!(1:24:nStep)
-    #     savefig("sce3/$(countrylist[i]).png")
-    # end
 
 end
 

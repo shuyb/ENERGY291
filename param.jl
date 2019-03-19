@@ -11,6 +11,7 @@ solaradjustment_path = "solaradjusment.csv"
 transmission_path = "transmission.csv"
 # The ratio of planned storage capacity to peak load
 # peakloadpercentage = 0.01
+transmissionloss = 0.01
 powercapacity = 12
 duration = 4
 nStep = 8760

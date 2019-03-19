@@ -1,4 +1,4 @@
-function optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration)
+function optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration, loss)
     countrylist = sort(collect(keys(loadProfiles)))
     nBus = length(countrylist)
     # capacity for 1% of peakload
@@ -33,10 +33,11 @@ function optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, 
     @constraint(m, [t = 1:nStep, b = 1:nBus], storage[b, t] <= capacity[b])
     @constraint(m, [b = 1:nBus], storage[b, 1] == 0)
     @constraint(m, [b = 1:nBus], discharge[b, 1] == 0)
+    @constraint(m, [t = 1:nStep, b = 1:nBus], sum(transmission[b,:,t] .* transmission_matrix[b,:]) <= sum(generationProfiles[countrylist[b]][t,:]) + discharge[b, t] + peaker[b, t])
     @constraint(m, [t = 2:nStep, b = 1:nBus], storage[b, t] == storage[b, t - 1] + charge[b, t] - discharge[b, t]) #+ sum(transmission[:,b,t] .* transmission_matrix[:,b]) - sum(transmission[b,:,t] .* transmission_matrix[b,:]))
-    @constraint(m, [t = 1:nStep, b = 1:nBus], discharge[b, t] + sum(generationProfiles[countrylist[b]][t,:]) + peaker[b, t] + sum(transmission[:,b,t] .* transmission_matrix[:,b]) >= charge[b, t] + loadProfiles[countrylist[b]][t] + sum(transmission[b,:,t] .* transmission_matrix[b,:]))
+    @constraint(m, [t = 1:nStep, b = 1:nBus], discharge[b, t] + sum(generationProfiles[countrylist[b]][t,:]) + peaker[b, t] + (1-loss) * sum(transmission[:,b,t] .* transmission_matrix[:,b]) >= charge[b, t] + loadProfiles[countrylist[b]][t] + sum(transmission[b,:,t] .* transmission_matrix[b,:]))
 
-    @objective(m, Min, sum(sum(discharge[b,t] * LCOS + peaker[b,t] * peakerrate for b = 1:nBus) for t = 1:nStep) + sum(transmission))
+    @objective(m, Min, sum(sum(discharge[b,t] * LCOS + peaker[b,t] * peakerrate for b = 1:nBus) for t = 1:nStep))
     println("Optimizing...")
     solve(m)
     println("Optimization finished.")
