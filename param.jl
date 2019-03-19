@@ -1,12 +1,13 @@
 abbreviation_path = "abbr.csv"
 load_path = "2018"
 generation_path = "generation"
+solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
 flow_path = "flow"
 injection_path = "injectionsites.txt"
 # offset_switch = false
 # solar_path = "2015EuropeSolarHourlyMW_GMT1.csv"
 peakadjusment_path = "peakadjusment.csv"
-solaradjustment_path = "solaradjustment.csv"
+solaradjustment_path = "solaradjusment.csv"
 transmission_path = "transmission.csv"
 # The ratio of planned storage capacity to peak load
 # peakloadpercentage = 0.01

@@ -13,8 +13,9 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # coeff_condition = hcat(generation_mix, NotChangeable, Changeable, Scalable)
 		ori_generation = copy(generation)
 
-		scale_solar = min(1, scale_solar)
-		if sum(generation[:,17]) < sum(solar)
+		current_scale = sum(generation[:,17]) / sum(solar)
+		scale_solar = min(1, max(scale_solar, current_scale))
+		if current_scale < 1
 			generation[:,17] = solar
 		else
 			println("Cannot deploy more solar generation in $country.")
@@ -23,7 +24,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
 
         generation = float(generation)
         generation[:,[4;10:12]] = generation[:,[4;10:12]] .+ 0.0001
-        
+
         c_var_s = 0.5/1000 # $/MWh
         c_var_w = 0.5/1000 # $/MWh
         c_var_gas = 41500/1000 # $/MWh
