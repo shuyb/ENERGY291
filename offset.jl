@@ -10,7 +10,7 @@ function offset!(loadProfiles, generationProfiles, filename, switch)
         end
         for (k, v) in offset
             loadProfiles[k] = circshift(loadProfiles[k], v)
-            generationProfiles[k] = circshift(generationProfiles[k], (v,0))
+            generationProfiles[k][:,[1:16;18:20]] = circshift(generationProfiles[k][:,[1:16;18:20]], (v,0))
         end
     end
 end
