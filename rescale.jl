@@ -57,7 +57,7 @@ function rescale_generation(generationProfiles, solarProfiles, country, switch =
         # println("Error:", getobjectivevalue(m))
         # println("Scale:", getvalue(scale))
         coef = getvalue(coef)
-        NEW_generation = abs.(coef .* generation)
+        NEW_generation = abs.(getvalue(scaled_generation))
         # plot(transpose(sum(NEW_generation, dims=1)),label = "NEW")
         # plot!(transpose(sum(ori_generation, dims=1)),label = "OLD")
         return NEW_generation
