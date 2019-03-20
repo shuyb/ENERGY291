@@ -1,3 +1,4 @@
+# Network optimization module of the optimization problem 
 function optimize(loadProfiles, generationProfiles, transmission_matrix, nStep, nBattery, powercapacity, duration, loss)
     countrylist = sort(collect(keys(loadProfiles)))
     nBus = length(countrylist)
