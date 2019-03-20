@@ -1,3 +1,4 @@
+# input transmission 30 by 30 matrix 
 function loadtransmission(filename, countrylist)
     temp = CSV.read(filename)
     transmission_matrix = Array{Int, 2}(undef, length(countrylist), length(countrylist))
