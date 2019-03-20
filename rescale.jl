@@ -1,4 +1,9 @@
-# input actual generation one country
+# Adjust country's generation profile to accomodate additional solar output
+# @Input generationProfiles: actual generation profile
+# @Input solarProfiles: modeled solar profile 
+# @Input country: name of country to be processed 
+# @Input scale_solar: percentage solar potential to be deployed
+# @Output NEW_generation: generation profile adjusted according to solar curve 
 function rescale_generation(generationProfiles, solarProfiles, country, switch = true, scale_solar = 1)
     if switch
         println("Deploying $(scale_solar*100)% of all potential solar generation in $country.")
