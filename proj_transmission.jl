@@ -1,5 +1,5 @@
 # go to param.jl to change parameters
-
+# project run to output transmission result matrix 
 using CSV, JuMP, LinearAlgebra, DataFrames, Plots, Cbc, DelimitedFiles
 include("param.jl")
 include("abbr.jl")
