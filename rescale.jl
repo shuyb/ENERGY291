@@ -1,3 +1,4 @@
+# Capacity expansion module of the optimization problem 
 # Adjust country's generation profile to accomodate additional solar output
 # @Input generationProfiles: actual generation profile
 # @Input solarProfiles: modeled solar profile 
