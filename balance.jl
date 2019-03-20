@@ -1,3 +1,4 @@
+# Allocate region's net import/export to border countries and make region's total load == total generation
 function loadbalance!(loadProfiles, generationProfiles, loadpath, inject, abbreviation)
     flowProfiles = Dict()
     countrylist = sort(collect(keys(loadProfiles)))
